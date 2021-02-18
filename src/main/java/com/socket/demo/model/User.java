@@ -25,7 +25,7 @@ public class User {
             joinColumns = {@JoinColumn(name = "user_id")},
             inverseJoinColumns = {@JoinColumn(name = "role_id")})
     private Set<Role> roles;
-//    private String role;
+
 
     public Long getId() {
         return id;
@@ -67,12 +67,4 @@ public class User {
         this.roles = roles;
     }
 
-
-//    public String getRole() {
-//        return role;
-//    }
-//
-//    public void setRole(String role) {
-//        this.role = role;
-//    }
 }

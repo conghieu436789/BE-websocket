@@ -35,6 +35,11 @@ public class ChatMessage {
 
     private Long user_receiver_id;
 
+    @ManyToOne
+    @JoinColumn(name = "chat_room_id",insertable = false,updatable = false)
+    private ChatRoom chatRoom;
+
+    private Long chat_room_id;
 
     public MessageType getType() {
         return type;

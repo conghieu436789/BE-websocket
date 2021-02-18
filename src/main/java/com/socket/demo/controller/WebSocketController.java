@@ -1,7 +1,10 @@
 package com.socket.demo.controller;
 
 import com.socket.demo.model.ChatMessage;
+import com.socket.demo.model.ChatRoom;
 import com.socket.demo.model.User;
+import com.socket.demo.service.IChatRoomService;
+import com.socket.demo.service.IMessageService;
 import com.socket.demo.service.IUserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -25,19 +28,21 @@ public class WebSocketController {
     @Autowired
     IUserService userService;
 
+    @Autowired
+    IMessageService messageService;
+    @Autowired
+    IChatRoomService chatRoomService;
 
-    @MessageMapping("/send/message/{senderId}/{receiverId}")
-    public ChatMessage sendMessageTo(@Payload ChatMessage chatMessage, @DestinationVariable("senderId") String senderId, @DestinationVariable("receiverId") String receiverId){
+
+    @MessageMapping("/send/message/{chatRoomId}")
+    public ChatMessage sendMessageTo(@Payload ChatMessage chatMessage, @DestinationVariable("chatRoomId") Long chatRoomId){
         System.out.println(chatMessage);
-//        User sender;
-//        User receiver;
-//        if(userService.findById(senderId).isPresent()) {
-//            sender = userService.findById(senderId).get();
-//        }
-//        if(userService.findById(receiverId).isPresent()) {
-//            receiver = userService.findById(receiverId).get();
-//        }
-        this.template.convertAndSend("/message/"+ senderId + "/" + receiverId,  chatMessage);
+        ChatRoom chatRoom;
+        if (chatRoomService.findById(chatRoomId).isPresent()) {
+            chatRoom = chatRoomService.findById(chatRoomId).get();
+            this.template.convertAndSend(chatRoom.getName(), chatMessage);
+            messageService.save(chatMessage);
+        }
         return chatMessage;
     }
 

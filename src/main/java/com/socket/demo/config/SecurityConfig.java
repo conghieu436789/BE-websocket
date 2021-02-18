@@ -65,7 +65,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                         "/register",
                         "/product/**",
                         "/socket/**",
-                        "/app/send/messageTo/**"
+                        "/app/send/messageTo/**",
+                        "/message/**",
+                        "/chatroom/**"
                 ).permitAll()
                 .anyRequest().authenticated()
                 .and().csrf().disable();
